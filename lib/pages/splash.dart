@@ -14,7 +14,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   // late Widget _myAnimatedWidget;
   double value = 100;
-
   Widget _myAnimatedWidget = Image.asset(key: const Key("1"), "assets/logo_animada.gif");
 
   @override
