@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yellow_exchange/pages/login.dart';
 import 'package:yellow_exchange/pages/splash.dart';
 
 void main() {
@@ -10,6 +11,9 @@ void main() {
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
         theme: ThemeData(),
+        routes: {
+          "/login" : (context) => const Login(),
+        }
       )
   );
 

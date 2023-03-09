@@ -37,6 +37,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             child: Image.asset("assets/logo_extensa_B.png"),
           );
         });
+        Timer(const Duration(milliseconds: 1500), () async {
+          Navigator.pushNamed(context, "/login");
+        });
+
       });
     });
     // _animationController.forward().then((value){
