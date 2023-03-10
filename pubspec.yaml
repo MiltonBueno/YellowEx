@@ -73,6 +73,10 @@ flutter:
     - assets/logo_negativa.png
     - assets/logo_positiva.png
     - assets/logo_simplificada.png
+    - assets/login_black.png
+    - assets/login_transparent.png
+    - assets/login_white.png
+    - assets/login_yellow.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
