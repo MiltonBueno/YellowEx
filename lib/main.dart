@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yellow_exchange/pages/login.dart';
+import 'package:yellow_exchange/pages/signup.dart';
 import 'package:yellow_exchange/pages/splash.dart';
 
 void main() {
@@ -13,6 +14,7 @@ void main() {
         theme: ThemeData(),
         routes: {
           "/login" : (context) => const Login(),
+          "/signup" : (context) => const SignUp(),
         }
       )
   );

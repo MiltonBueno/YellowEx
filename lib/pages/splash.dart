@@ -60,7 +60,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     final bool useMobileLayout = shortestSide < 600;
 
     return Container(
-      color: Colors.white,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/login_white.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.2, vertical: size.height * 0.2),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yellow_exchange/bloc/login_bloc.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -10,6 +11,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  LoginBloc loginBloc = LoginBloc();
 
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -167,10 +170,10 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.05, bottom: size.height * 0.1),
+                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.05),
                 child: Container(
                     width: size.width,
-                    padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
+                    // padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
                     decoration: BoxDecoration(
                         color: const Color(0xff1a2a28),
                         borderRadius: BorderRadius.circular(10)
@@ -178,10 +181,10 @@ class _LoginState extends State<Login> {
                     child: TextButton(
                       onPressed: () {},
                       child: const Text(
-                        "ENTRAR",
+                        "LOGIN",
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 15
+                            fontSize: 17
                         ),
                       )
                     ),
@@ -206,7 +209,33 @@ class _LoginState extends State<Login> {
                     //     }
                     // )
                 ),
-              )
+              ),
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Forgot my password",
+                  style: TextStyle(
+                    color: Color(0xff1a2a28),
+                    fontSize: 15,
+                  ),
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: size.height * 0.05),
+                child: TextButton(
+                  onPressed: () {
+                    loginBloc.goToSignUpPage(context);
+                  },
+                  child: const Text(
+                    "SIGN UP",
+                    style: TextStyle(
+                      color: Color(0xff1a2a28),
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
+                ),
+              ),
             ],
           ),
         ),
