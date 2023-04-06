@@ -6,4 +6,8 @@ class LoginBloc {
     Navigator.pushNamed(context, "/signup");
   }
 
+  goToForgotPasswordPage(context){
+    Navigator.pushNamed(context, "/forgot");
+  }
+
 }

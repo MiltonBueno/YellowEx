@@ -173,6 +173,7 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.05),
                 child: Container(
                     width: size.width,
+                    height: 47.5,
                     // padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
                     decoration: BoxDecoration(
                         color: const Color(0xff1a2a28),
@@ -211,7 +212,9 @@ class _LoginState extends State<Login> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  loginBloc.goToForgotPasswordPage(context);
+                },
                 child: const Text(
                   "Forgot my password",
                   style: TextStyle(

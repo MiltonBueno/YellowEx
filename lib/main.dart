@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yellow_exchange/pages/forgot_password.dart';
 import 'package:yellow_exchange/pages/login.dart';
 import 'package:yellow_exchange/pages/signup.dart';
 import 'package:yellow_exchange/pages/splash.dart';
@@ -15,6 +16,7 @@ void main() {
         routes: {
           "/login" : (context) => const Login(),
           "/signup" : (context) => const SignUp(),
+          "/forgot" : (context) => const ForgotPassword(),
         }
       )
   );

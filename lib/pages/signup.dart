@@ -215,6 +215,7 @@ class _SignUpState extends State<SignUp> {
                 padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.075),
                 child: Container(
                   width: size.width,
+                  height: 47.5,
                   // padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
                   decoration: BoxDecoration(
                       color: const Color(0xff1a2a28),
