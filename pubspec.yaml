@@ -79,6 +79,7 @@ flutter:
     - assets/login_white.png
     - assets/login_yellow.png
     - assets/forgot_password.jpg
+    - assets/forgot_password.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -40,7 +40,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                    padding: EdgeInsets.only(top: size.height * 0.1, left: size.width * 0.03, bottom: size.height * 0.015),
+                    padding: EdgeInsets.only(top: size.height * 0.1, left: size.width * 0.03),
                     child: IconButton(
                       icon: const Icon(
                         Icons.arrow_back,
@@ -54,8 +54,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.175, right: size.width * 0.175),
-                child: Image.asset("assets/forgot_password.jpg", ),
+                padding: EdgeInsets.only(left: size.width * 0.225, right: size.width * 0.225),
+                child: Image.asset("assets/forgot_password.png", ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.07),
