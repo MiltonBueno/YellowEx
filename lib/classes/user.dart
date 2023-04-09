@@ -13,14 +13,13 @@ class User {
   // User({this.name = "", this.email = "", this.username = "", this.password = ""});
   //Esse construtor deixa opcional
 
-  @override
-  String toString() {
+  String userToString() {
     return '$name|$email|$username|$password';
   }
 
   List<User> registeredUsersList = [];
 
-  String keyRegisteredUsers = "registeredUsers";
+  static String keyRegisteredUsers = "registeredUsers";
 
   Future<bool> checkIfThereAreRegisteredUsers() async {
     final prefs = await SharedPreferences.getInstance();
@@ -57,7 +56,7 @@ class User {
     // String usersString = usersList.map((user) => user.toString()).join(',');
     // return usersString;
 
-    return usersList.map((user) => user.toString()).join(',');
+    return usersList.map((user) => user.userToString()).join(',');
 
   }
 
