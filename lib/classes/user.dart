@@ -1,13 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class User {
+class UserClass {
 
   String name;
   String email;
   String username;
   String password;
 
-  User(this.name, this.email, this.username, this.password);
+  UserClass(this.name, this.email, this.username, this.password);
   //Esse construtor obriga que as propriedades sejam definidas ao utilizar a classe
 
   // User({this.name = "", this.email = "", this.username = "", this.password = ""});
@@ -17,14 +17,18 @@ class User {
     return '$name|$email|$username|$password';
   }
 
-  List<User> registeredUsersList = [];
+}
+
+class User {
+
+  List<UserClass> registeredUsersList = [];
 
   static String keyRegisteredUsers = "registeredUsers";
 
   Future<bool> checkIfThereAreRegisteredUsers() async {
     final prefs = await SharedPreferences.getInstance();
     String? registeredUsers = prefs.getString(keyRegisteredUsers);
-    if(registeredUsers == ""){
+    if(registeredUsers == "" || registeredUsers == null){
       return false;
     }else{
       return true;
@@ -35,13 +39,13 @@ class User {
   addSimulatedUsers() async {
 
     registeredUsersList.addAll([
-      User("Teste", "teste@email.com", "teste", "teste"),
-      User("Emily Johnson", "emilyj@email.com", "emilyj82", "p@ssw0rd"),
-      User("Daniel Ramirez", "danielr@email.com", "danielr29", "c00lPass"),
-      User("Sophie Lee", "sophiel123@email.com", "sophiel123", "1qazxsw2"),
-      User("Michael Patel", "michaelpatel@email.com", "mpatel86", "MyPassWord123"),
-      User("Julia Wilson", "juliawilson@email.com", "juliawilson23", "s3cur3P@ss"),
-      User("Liam Davis", "liamdavis@email.com", "liamdavis98", "P@ssw0rd!")
+      UserClass("Teste", "teste@email.com", "teste", "teste"),
+      UserClass("Emily Johnson", "emilyj@email.com", "emilyj82", "p@ssw0rd"),
+      UserClass("Daniel Ramirez", "danielr@email.com", "danielr29", "c00lPass"),
+      UserClass("Sophie Lee", "sophiel123@email.com", "sophiel123", "1qazxsw2"),
+      UserClass("Michael Patel", "michaelpatel@email.com", "mpatel86", "MyPassWord123"),
+      UserClass("Julia Wilson", "juliawilson@email.com", "juliawilson23", "s3cur3P@ss"),
+      UserClass("Liam Davis", "liamdavis@email.com", "liamdavis98", "P@ssw0rd!")
     ]);
 
     String usersString = turnListToString(registeredUsersList);
@@ -60,11 +64,11 @@ class User {
 
   }
 
-  List turnStringToList(String usersString){
+  List<UserClass> turnStringToList(String usersString){
 
     return usersString.split(',').map((str) {
       List<String> parts = str.split('|');
-      return User(parts[0], parts[1], parts[2], parts[3]);
+      return UserClass(parts[0], parts[1], parts[2], parts[3]);
     }).toList();
 
   }

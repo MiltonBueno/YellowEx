@@ -20,6 +20,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
 
+    loginBloc.checkAndCreateSimulatedUser(context);
+
     var size = MediaQuery.of(context).size;
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     final bool useMobileLayout = shortestSide < 600;
