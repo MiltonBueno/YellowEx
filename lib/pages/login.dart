@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yellow_exchange/bloc/login_bloc.dart';
 
+import '../classes/custom_input_decoration.dart';
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -18,9 +20,16 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      loginBloc.checkRegisteredUsers(context);
+    });
+  }
 
-    loginBloc.checkAndCreateSimulatedUser(context);
+  @override
+  Widget build(BuildContext context) {
 
     var size = MediaQuery.of(context).size;
     var shortestSide = MediaQuery.of(context).size.shortestSide;
@@ -44,94 +53,17 @@ class _LoginState extends State<Login> {
                 child: Image.asset("assets/logo_simplificada.png", ),
                 // child: Image.asset("assets/logo_extensa_A.png", ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.1),
-              //   child: Container(
-              //     padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
-              //     decoration: BoxDecoration(
-              //         color: Colors.grey.shade300,
-              //         borderRadius: BorderRadius.circular(10)
-              //     ),
-              //     child: TextFormField(
-              //       controller: userController,
-              //       cursorColor: Colors.grey,
-              //       decoration: InputDecoration(
-              //         hintText: "Usuário",
-              //         hintStyle: TextStyle(
-              //             color: Colors.grey.shade500,
-              //             fontSize: 20
-              //         ),
-              //         icon: const Icon(Icons.person, size: 35,),
-              //         border: InputBorder.none,
-              //       ),
-              //       textAlign: TextAlign.left,
-              //       style: const TextStyle(
-              //           fontSize: 20
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.03),
-              //   child: Container(
-              //     padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
-              //     decoration: BoxDecoration(
-              //         color: Colors.grey.shade300,
-              //         borderRadius: BorderRadius.circular(10)
-              //     ),
-              //     child: TextFormField(
-              //       controller: passwordController,
-              //       cursorColor: Colors.grey,
-              //       obscureText: true,
-              //       decoration: InputDecoration(
-              //         hintText: "Senha",
-              //         hintStyle: TextStyle(
-              //             color: Colors.grey.shade500,
-              //             fontSize: 20
-              //         ),
-              //         icon: const Icon(Icons.lock, size: 30,),
-              //         border: InputBorder.none,
-              //       ),
-              //       textAlign: TextAlign.left,
-              //       style: const TextStyle(
-              //           fontSize: 20
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Padding(
                 padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.03),
                 child: Container(
                   padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
                   child: TextFormField(
+                    controller: loginBloc.emailController,
                     cursorColor: const Color(0xff1a2a28),
                     style: const TextStyle(
                       color: Color(0xff1a2a28)
                     ),
-                    decoration: const InputDecoration(
-                      // icon: Icon(Icons.email),
-                      disabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      labelText: "USERNAME",
-                      labelStyle: TextStyle(
-                        color: Color(0xff1a2a28),
-                        fontWeight: FontWeight.bold
-                      ),
-                      hintText: "example@email.com",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
+                    decoration: buildCustomInputDecoration("USERNAME", "example@email.com"),
                   )
                 ),
               ),
@@ -140,34 +72,12 @@ class _LoginState extends State<Login> {
                 child: Container(
                   padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
                   child: TextFormField(
+                    controller: loginBloc.passwordController,
                     cursorColor: const Color(0xff1a2a28),
                     style: const TextStyle(
                       color: Color(0xff1a2a28)
                     ),
-                    decoration: const InputDecoration(
-                      // icon: Icon(Icons.email),
-                      disabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                      ),
-                      labelText: "PASSWORD",
-                      labelStyle: TextStyle(
-                        color: Color(0xff1a2a28),
-                        fontWeight: FontWeight.bold
-                      ),
-                      hintText: "example",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
+                    decoration: buildCustomInputDecoration("PASSWORD", "example"),
                   )
                 ),
               ),
@@ -182,7 +92,9 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(10)
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        loginBloc.validateLogin();
+                      },
                       child: const Text(
                         "LOGIN",
                         style: TextStyle(
@@ -216,6 +128,7 @@ class _LoginState extends State<Login> {
               TextButton(
                 onPressed: () {
                   loginBloc.goToForgotPasswordPage(context);
+                  // loginBloc.deleteSimulatedUsers();
                 },
                 child: const Text(
                   "Forgot my password",

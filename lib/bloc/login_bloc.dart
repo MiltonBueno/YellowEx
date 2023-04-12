@@ -4,7 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../classes/user.dart';
 class LoginBloc {
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   List<UserClass> registeredUsersList = [];
+
+  User user = User();
 
   goToSignUpPage(context){
     Navigator.pushNamed(context, "/signup");
@@ -14,9 +19,7 @@ class LoginBloc {
     Navigator.pushNamed(context, "/forgot");
   }
 
-  checkAndCreateSimulatedUser(context) async {
-
-    User user = User();
+  checkRegisteredUsers(context) async {
 
     bool thereAre = await user.checkIfThereAreRegisteredUsers();
 
@@ -42,7 +45,10 @@ class LoginBloc {
                   ),
                   TextButton(
                     child: const Text("Simulate users"),
-                    onPressed:  () {
+                    onPressed:  () async {
+
+                      createSimulatedUsers();
+                      Navigator.pop(context);
 
                     },
                   ),
@@ -52,37 +58,71 @@ class LoginBloc {
           );
         },
       );
+    }else{
+
+      await updateRegisteredUsers();
+
     }
-
-    //Se desejar
-
-    // await user.addSimulatedUsers();
-    //
-    // final prefs = await SharedPreferences.getInstance();
-    // String? registeredUsers = prefs.getString(User.keyRegisteredUsers);
-    // if(registeredUsers != null && registeredUsers != ""){
-    //   registeredUsersList = user.turnStringToList(registeredUsers!);
-    // }
 
   }
 
-  validateLogin(String insertedEmail, String insertedPassword){
+  createSimulatedUsers() async {
 
-    for(var element in registeredUsersList){
+    await user.addSimulatedUsers();
+    await updateRegisteredUsers();
+
+  }
+
+  updateRegisteredUsers() async {
+
+    final prefs = await SharedPreferences.getInstance();
+    String? registeredUsers = prefs.getString(User.keyRegisteredUsers);
+    if(registeredUsers != null && registeredUsers != ""){
+      registeredUsersList = user.turnStringToList(registeredUsers!);
+    }
+
+  }
+
+  deleteSimulatedUsers() async {
+    
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(User.keyRegisteredUsers, "");
+    
+  }
+
+  validateLogin(){
+
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    //Mensagem mostrando que não há usuários cadastrados
+
+    if (email.isEmpty && password.isEmpty) {
+      print("Preencha os campos com suas informações");
+    } else if (email.isEmpty) {
+      print("Preencha o campo com seu email");
+    } else if (password.isEmpty) {
+      print("Preencha o campo com sua senha");
+    } else {
       bool emailExists = false;
-      if(element.email == insertedEmail){
-        emailExists = true;
-        if(element.password == insertedPassword){
-          //Login validado
-        }else{
-          //Senha incorreta
+      for (var element in registeredUsersList) {
+        if (element.email == email) {
+          emailExists = true;
+          if (element.password == password) {
+            //Login validado
+            print("Login correto");
+          } else {
+            //Senha incorreta
+            print("Senha incorreta");
+          }
+          break; // termina a busca pelo usuário
         }
       }
-      if(!emailExists){
+      if (!emailExists) {
+        print("Email não encontrado");
         //Email não encontrado no banco de dados
       }
     }
-
   }
 
   LoginBloc(){
