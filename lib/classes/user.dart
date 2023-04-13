@@ -57,9 +57,6 @@ class User {
 
   String turnListToString(List usersList){
 
-    // String usersString = usersList.map((user) => user.toString()).join(',');
-    // return usersString;
-
     return usersList.map((user) => user.userToString()).join(',');
 
   }

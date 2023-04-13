@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                     style: const TextStyle(
                       color: Color(0xff1a2a28)
                     ),
-                    decoration: buildCustomInputDecoration("USERNAME", "example@email.com"),
+                    decoration: buildCustomInputDecoration("USERNAME", "example@email.com", true),
                   )
                 ),
               ),
@@ -77,7 +77,7 @@ class _LoginState extends State<Login> {
                     style: const TextStyle(
                       color: Color(0xff1a2a28)
                     ),
-                    decoration: buildCustomInputDecoration("PASSWORD", "example"),
+                    decoration: buildCustomInputDecoration("PASSWORD", "example", false),
                   )
                 ),
               ),
@@ -138,8 +138,16 @@ class _LoginState extends State<Login> {
                   ),
                 )
               ),
+              Text(
+                "Error: wrong password",
+                style: TextStyle(
+                  // color: Colors.transparent,
+                  color: errorColor,
+                  fontSize: 15,
+                ),
+              ),
               Padding(
-                padding: EdgeInsets.only(top: size.height * 0.05),
+                padding: EdgeInsets.only(top: size.height * 0.025),
                 child: TextButton(
                   onPressed: () {
                     loginBloc.goToSignUpPage(context);
