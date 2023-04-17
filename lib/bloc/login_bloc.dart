@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../classes/user.dart';
 class LoginBloc {
+
+  BehaviorSubject<String> errorMessage = BehaviorSubject();
+  BehaviorSubject<bool> errorEmail = BehaviorSubject();
+  BehaviorSubject<bool> errorPassword = BehaviorSubject();
+  BehaviorSubject<bool> loadingLogin = BehaviorSubject();
+  BehaviorSubject<bool> passwordObscure = BehaviorSubject();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -78,7 +85,7 @@ class LoginBloc {
     final prefs = await SharedPreferences.getInstance();
     String? registeredUsers = prefs.getString(User.keyRegisteredUsers);
     if(registeredUsers != null && registeredUsers != ""){
-      registeredUsersList = user.turnStringToList(registeredUsers!);
+      registeredUsersList = user.turnStringToList(registeredUsers);
     }
 
   }
@@ -95,34 +102,53 @@ class LoginBloc {
     String email = emailController.text;
     String password = passwordController.text;
 
-    //Mensagem mostrando que não há usuários cadastrados
+    loadingLogin.sink.add(true);
 
-    if (email.isEmpty && password.isEmpty) {
-      print("Preencha os campos com suas informações");
-    } else if (email.isEmpty) {
-      print("Preencha o campo com seu email");
-    } else if (password.isEmpty) {
-      print("Preencha o campo com sua senha");
-    } else {
-      bool emailExists = false;
-      for (var element in registeredUsersList) {
-        if (element.email == email) {
-          emailExists = true;
-          if (element.password == password) {
-            //Login validado
-            print("Login correto");
-          } else {
-            //Senha incorreta
-            print("Senha incorreta");
+    if(registeredUsersList.isNotEmpty){
+      if (email.isEmpty && password.isEmpty) {
+        errorEmail.sink.add(true);
+        errorPassword.sink.add(true);
+        errorMessage.sink.add("Fill in the fields with your information");
+      } else if (email.isEmpty) {
+        errorPassword.sink.add(false);
+        errorEmail.sink.add(true);
+        errorMessage.sink.add("Fill in the field with your email");
+      } else if (password.isEmpty) {
+        errorEmail.sink.add(false);
+        errorPassword.sink.add(true);
+        errorMessage.sink.add("Fill in the field with your password");
+      } else {
+        bool emailExists = false;
+        for (var element in registeredUsersList) {
+          if (element.email == email) {
+            emailExists = true;
+            if (element.password == password) {
+
+              print("Login correto");
+              errorEmail.sink.add(false);
+              errorPassword.sink.add(false);
+              errorMessage.sink.add("");
+
+            } else {
+              errorEmail.sink.add(false);
+              errorPassword.sink.add(true);
+              errorMessage.sink.add("Incorrect password");
+            }
+            break;
           }
-          break; // termina a busca pelo usuário
+        }
+        if (!emailExists) {
+          errorPassword.sink.add(false);
+          errorEmail.sink.add(true);
+          errorMessage.sink.add("Email not found");
         }
       }
-      if (!emailExists) {
-        print("Email não encontrado");
-        //Email não encontrado no banco de dados
-      }
+    }else{
+      errorMessage.sink.add("There are no registered users in the database");
     }
+
+    loadingLogin.sink.add(false);
+
   }
 
   LoginBloc(){
