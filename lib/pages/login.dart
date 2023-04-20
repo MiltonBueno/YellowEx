@@ -16,9 +16,6 @@ class _LoginState extends State<Login> {
 
   LoginBloc loginBloc = LoginBloc();
 
-  TextEditingController userController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   @override
   void initState() {
     // TODO: implement initState
@@ -66,7 +63,7 @@ class _LoginState extends State<Login> {
                         style: const TextStyle(
                           color: Color(0xff1a2a28)
                         ),
-                        decoration: buildCustomInputDecoration("USERNAME", "example@email.com", errorEmail.data ?? false),
+                        decoration: buildCustomInputDecoration("EMAIL", "example@email.com", errorEmail.data ?? false),
                       )
                     ),
                   );
@@ -117,12 +114,12 @@ class _LoginState extends State<Login> {
                                 color: (errorPassword.data ?? false) ? errorColor : const Color(0xff1a2a28),
                                 fontWeight: FontWeight.bold,
                               ),
-                              hintText: "example",
+                              hintText: "example_password",
                               hintStyle: const TextStyle(
                                 color: Colors.grey,
                               ),
                               suffixIcon: IconButton(
-                                icon: obscure.data != null && obscure.data! ? const Icon(Icons.visibility, color: Colors.grey,) : const Icon(Icons.visibility_off, color: Colors.grey),
+                                icon: obscure.data != null && obscure.data! ? const Icon(Icons.visibility_off, color: Colors.grey,) : const Icon(Icons.visibility, color: Colors.grey),
                                 onPressed: (){
                                   loginBloc.passwordObscure.sink.add(!obscure.data!);
                                 },

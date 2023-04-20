@@ -12,23 +12,15 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
 
-  // late Widget _myAnimatedWidget;
+  late Image backgroundImage;
+  late Image forgotPasswordImage;
+
   double value = 100;
   Widget _myAnimatedWidget = Image.asset(key: const Key("1"), "assets/logo_animada.gif");
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // _myAnimatedWidget = Image.asset(key: const Key("2"), "assets/logo_animada.gif");
-      // Timer(const Duration(milliseconds: 4000), () async {
-      //   setState(() {
-      //     _myAnimatedWidget = Padding(
-      //       key: const Key("3"),
-      //       padding: const EdgeInsets.only(top: 5, left: 2),
-      //       child: Image.asset("assets/logo_extensa_A.png"),
-      //     );
-      //   });
-      // });
       Timer(const Duration(milliseconds: 4000), () async {
         setState(() {
           _myAnimatedWidget = Padding(
@@ -43,13 +35,17 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
       });
     });
-    // _animationController.forward().then((value){
-    //   setState(() {
-    //     _myAnimatedWidget = Image.asset("assets/logo_extensa_A.gif");
-    //   });
-    // });
-
     super.initState();
+    backgroundImage = Image.asset("assets/login_white.png");
+    forgotPasswordImage = Image.asset("assets/forgot_password.png");
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    precacheImage(backgroundImage.image, context);
+    precacheImage(forgotPasswordImage.image, context);
   }
 
   @override

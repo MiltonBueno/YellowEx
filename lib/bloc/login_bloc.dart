@@ -99,10 +99,10 @@ class LoginBloc {
 
   validateLogin(){
 
+    loadingLogin.sink.add(true);
+
     String email = emailController.text;
     String password = passwordController.text;
-
-    loadingLogin.sink.add(true);
 
     if(registeredUsersList.isNotEmpty){
       if (email.isEmpty && password.isEmpty) {
