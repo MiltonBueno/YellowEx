@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,12 +19,22 @@ class LoginBloc {
 
   User user = User();
 
+  initialPageState(){
+    errorEmail.sink.add(false);
+    errorPassword.sink.add(false);
+    errorMessage.sink.add("");
+    emailController.clear();
+    passwordController.clear();
+  }
+
   goToSignUpPage(context){
     Navigator.pushNamed(context, "/signup");
+    initialPageState();
   }
 
   goToForgotPasswordPage(context){
     Navigator.pushNamed(context, "/forgot");
+    initialPageState();
   }
 
   checkRegisteredUsers(context) async {
@@ -124,7 +135,9 @@ class LoginBloc {
             emailExists = true;
             if (element.password == password) {
 
-              print("Login correto");
+              if (kDebugMode) {
+                print("Login correto");
+              }
               errorEmail.sink.add(false);
               errorPassword.sink.add(false);
               errorMessage.sink.add("");
@@ -152,7 +165,11 @@ class LoginBloc {
   }
 
   LoginBloc(){
-
+    errorEmail.sink.add(false);
+    errorPassword.sink.add(false);
+    errorMessage.sink.add("");
+    emailController.clear();
+    passwordController.clear();
   }
 
 }

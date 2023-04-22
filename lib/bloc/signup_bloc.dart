@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,7 +94,9 @@ class SignUpBloc {
 
         await prefs.setString(User.keyRegisteredUsers, usersString);
 
-        print("Cadastro realizado"); //Direcionar para tela login ou para tela home
+        if (kDebugMode) {
+          print("Cadastro realizado");
+        } //Direcionar para tela login ou para tela home
         // com mensagem de boas vindas para novo usuário
 
       }
