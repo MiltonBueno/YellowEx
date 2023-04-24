@@ -106,4 +106,14 @@ class SignUpBloc {
 
   }
 
+  getCurrentUsersList() async {
+
+    registeredUsersList = await user.getRegisteredUsersList();
+
+  }
+
+  SignUpBloc(){
+    getCurrentUsersList();
+  }
+
 }

@@ -70,4 +70,15 @@ class User {
 
   }
 
+  Future<List<UserClass>> getRegisteredUsersList() async {
+
+    final prefs = await SharedPreferences.getInstance();
+    String? registeredUsers = prefs.getString(keyRegisteredUsers);
+    if(registeredUsers != null && registeredUsers != ""){
+      return turnStringToList(registeredUsers);
+    }
+    return [];
+
+  }
+
 }

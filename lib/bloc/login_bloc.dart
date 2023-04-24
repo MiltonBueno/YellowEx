@@ -93,11 +93,7 @@ class LoginBloc {
 
   updateRegisteredUsers() async {
 
-    final prefs = await SharedPreferences.getInstance();
-    String? registeredUsers = prefs.getString(User.keyRegisteredUsers);
-    if(registeredUsers != null && registeredUsers != ""){
-      registeredUsersList = user.turnStringToList(registeredUsers);
-    }
+    registeredUsersList = await user.getRegisteredUsersList();
 
   }
 

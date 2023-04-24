@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yellow_exchange/bloc/forgot_password_bloc.dart';
+import '../classes/custom_input_decoration.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -12,10 +14,7 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
 
-  TextEditingController userController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  ForgotPasswordBloc forgotPasswordBloc = ForgotPasswordBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: Image.asset("assets/forgot_password.png", ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.07),
+                padding: EdgeInsets.only(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.05),
                 child: const Text(
                   "Forgot your password?",
                   style: TextStyle(
@@ -80,190 +79,76 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.03),
-              //   child: Container(
-              //       padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
-              //       child: TextFormField(
-              //         cursorColor: const Color(0xff1a2a28),
-              //         style: const TextStyle(
-              //             color: Color(0xff1a2a28)
-              //         ),
-              //         decoration: const InputDecoration(
-              //           // icon: Icon(Icons.email),
-              //           disabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           focusedBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           border: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           enabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           labelText: "NAME",
-              //           labelStyle: TextStyle(
-              //               color: Color(0xff1a2a28),
-              //               fontWeight: FontWeight.bold
-              //           ),
-              //           hintText: "Example Name",
-              //           hintStyle: TextStyle(
-              //             color: Colors.grey,
-              //           ),
-              //         ),
-              //       )
-              //   ),
-              // ),
+              StreamBuilder<bool>(
+                  stream: forgotPasswordBloc.errorEmail.stream,
+                  builder: (context, errorEmail) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.02),
+                      child: Container(
+                          padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
+                          child: TextFormField(
+                            controller: forgotPasswordBloc.emailController,
+                            cursorColor: const Color(0xff1a2a28),
+                            style: const TextStyle(
+                                color: Color(0xff1a2a28)
+                            ),
+                            decoration: buildCustomInputDecoration("EMAIL", "example@email.com", errorEmail.data ?? false),
+                          )
+                      ),
+                    );
+                  }
+              ),
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.03),
+                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.06),
                 child: Container(
-                    padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
-                    child: TextFormField(
-                      cursorColor: const Color(0xff1a2a28),
-                      style: const TextStyle(
-                          color: Color(0xff1a2a28)
-                      ),
-                      decoration: const InputDecoration(
-                        // icon: Icon(Icons.email),
-                        disabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                        ),
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-                        ),
-                        labelText: "EMAIL",
-                        labelStyle: TextStyle(
-                            color: Color(0xff1a2a28),
-                            fontWeight: FontWeight.bold
-                        ),
-                        hintText: "example@email.com",
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
+                    width: size.width,
+                    height: 47.5,
+                    // padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
+                    decoration: BoxDecoration(
+                        color: const Color(0xff1a2a28),
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: StreamBuilder<bool>(
+                        initialData: false,
+                        stream: forgotPasswordBloc.loadingReset.stream,
+                        builder: (context, snapshot) {
+
+                          bool loading = snapshot.data ?? false; //Intermediate variable to avoid possible null value
+
+                          return TextButton(
+                            child: loading ?
+                            const SizedBox(
+                                height: 30, width: 30,
+                                child: CircularProgressIndicator(color: Colors.white,))
+                                : const Text(
+                              "RESET PASSWORD",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17
+                              ),
+                            ),
+                            onPressed: () {
+                              forgotPasswordBloc.resetPassword(context);
+                            },
+                          );
+                        }
                     )
                 ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.03),
-              //   child: Container(
-              //       padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
-              //       child: TextFormField(
-              //         cursorColor: const Color(0xff1a2a28),
-              //         style: const TextStyle(
-              //             color: Color(0xff1a2a28)
-              //         ),
-              //         decoration: const InputDecoration(
-              //           // icon: Icon(Icons.email),
-              //           disabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           focusedBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           border: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           enabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           labelText: "USERNAME",
-              //           labelStyle: TextStyle(
-              //               color: Color(0xff1a2a28),
-              //               fontWeight: FontWeight.bold
-              //           ),
-              //           hintText: "example_username",
-              //           hintStyle: TextStyle(
-              //             color: Colors.grey,
-              //           ),
-              //         ),
-              //       )
-              //   ),
-              // ),
-              // Padding(
-              //   padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.03),
-              //   child: Container(
-              //       padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
-              //       child: TextFormField(
-              //         cursorColor: const Color(0xff1a2a28),
-              //         style: const TextStyle(
-              //             color: Color(0xff1a2a28)
-              //         ),
-              //         decoration: const InputDecoration(
-              //           // icon: Icon(Icons.email),
-              //           disabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           focusedBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           border: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           enabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Color(0xff1a2a28), width: 1.5),
-              //           ),
-              //           labelText: "PASSWORD",
-              //           labelStyle: TextStyle(
-              //               color: Color(0xff1a2a28),
-              //               fontWeight: FontWeight.bold
-              //           ),
-              //           hintText: "example_password",
-              //           hintStyle: TextStyle(
-              //             color: Colors.grey,
-              //           ),
-              //         ),
-              //       )
-              //   ),
-              // ),
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.075),
-                child: Container(
-                  width: size.width,
-                  height: 47.5,
-                  // padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
-                  decoration: BoxDecoration(
-                      color: const Color(0xff1a2a28),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "RESET PASSWORD",
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.025),
+                child: StreamBuilder<String>(
+                    stream: forgotPasswordBloc.errorMessage.stream,
+                    builder: (context, message) {
+                      return Text(
+                        message.data ?? "",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17
+                          color: message.data != null ? errorColor : Colors.transparent,
+                          fontSize: 15,
                         ),
-                      )
-                  ),
-                  // child: StreamBuilder<bool>(
-                  //     initialData: false,
-                  //     stream: _loadingButton.stream,
-                  //     builder: (context, loading) {
-                  //       return TextButton(
-                  //         child: !loading.data! ?
-                  //         const Text(
-                  //           "ENTRAR",
-                  //           style: TextStyle(
-                  //               color: Colors.white,
-                  //               fontSize: 15
-                  //           ),
-                  //         ) : const SizedBox(
-                  //             height: 30, width: 30,
-                  //             child: CircularProgressIndicator(color: Colors.white,)),
-                  //         onPressed: () async {
-                  //         },
-                  //       );
-                  //     }
-                  // )
+                      );
+                    }
                 ),
               ),
             ],
