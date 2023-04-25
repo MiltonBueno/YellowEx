@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../bloc/forgot_password_bloc.dart';
+import '../classes/custom_input_decoration.dart';
 
 class ForgotPassword2 extends StatefulWidget {
 
@@ -82,66 +83,71 @@ class _ForgotPassword2State extends State<ForgotPassword2> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.02),
-                child: Container(
-                    padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015),
-                    child: StreamBuilder<bool>(
-                        stream: forgotPasswordBloc.passwordObscure.stream,
-                        initialData: true,
-                        builder: (context, obscure) {
-                          return TextFormField(
-                            obscureText: obscure.data ?? true,
-                            controller: forgotPasswordBloc.passwordController,
-                            cursorColor: const Color(0xff1a2a28),
-                            style: const TextStyle(
-                                color: Color(0xff1a2a28)
-                            ),
-                            decoration: InputDecoration(
-                              // icon: Icon(Icons.email),
-                              disabledBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color:
-                                Color(0xff1a2a28),
-                                    width: 1.5),
-                              ),
-                              focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color:
-                                Color(0xff1a2a28),
-                                    width: 1.5),
-                              ),
-                              border: const UnderlineInputBorder(
-                                borderSide: BorderSide(color:
-                                Color(0xff1a2a28),
-                                    width: 1.5),
-                              ),
-                              enabledBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color:
-                                Color(0xff1a2a28),
-                                    width: 1.5),
-                              ),
-                              labelText: "PASSWORD",
-                              labelStyle: const TextStyle(
-                                color: Color(0xff1a2a28),
-                                fontWeight: FontWeight.bold,
-                              ),
-                              hintText: "example_password",
-                              hintStyle: const TextStyle(
-                                color: Colors.grey,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: obscure.data != null && obscure.data! ? const Icon(Icons.visibility_off, color: Colors.grey,) : const Icon(Icons.visibility, color: Colors.grey),
-                                onPressed: (){
-                                  forgotPasswordBloc.passwordObscure.sink.add(!obscure.data!);
-                                },
-                              ),
-                            ),
-                          );
-                        }
-                    )
-                ),
+              StreamBuilder<bool>(
+                  stream: forgotPasswordBloc.errorPassword.stream,
+                  builder: (context, errorPassword) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
+                      child: Container(
+                          padding: EdgeInsets.only(left: size.width * 0.015, right: size.width * 0.015, top: size.height * 0.005),
+                          child: StreamBuilder<bool>(
+                              stream: forgotPasswordBloc.passwordObscure.stream,
+                              initialData: true,
+                              builder: (context, obscure) {
+                                return TextFormField(
+                                  obscureText: obscure.data ?? true,
+                                  controller: forgotPasswordBloc.passwordController,
+                                  cursorColor: const Color(0xff1a2a28),
+                                  style: const TextStyle(
+                                      color: Color(0xff1a2a28)
+                                  ),
+                                  decoration: InputDecoration(
+                                    // icon: Icon(Icons.email),
+                                    disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color:
+                                      (errorPassword.data ?? false) ? errorColor : const Color(0xff1a2a28),
+                                          width: 1.5),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color:
+                                      (errorPassword.data ?? false) ? errorColor : const Color(0xff1a2a28),
+                                          width: 1.5),
+                                    ),
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(color:
+                                      (errorPassword.data ?? false) ? errorColor : const Color(0xff1a2a28),
+                                          width: 1.5),
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color:
+                                      (errorPassword.data ?? false) ? errorColor : const Color(0xff1a2a28),
+                                          width: 1.5),
+                                    ),
+                                    labelText: "NEW PASSWORD",
+                                    labelStyle: TextStyle(
+                                      color: (errorPassword.data ?? false) ? errorColor : const Color(0xff1a2a28),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    hintText: "example_password",
+                                    hintStyle: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: obscure.data != null && obscure.data! ? const Icon(Icons.visibility_off, color: Colors.grey,) : const Icon(Icons.visibility, color: Colors.grey),
+                                      onPressed: (){
+                                        forgotPasswordBloc.passwordObscure.sink.add(!obscure.data!);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }
+                          )
+                      ),
+                    );
+                  }
               ),
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.06),
+                padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05, top: size.height * 0.035),
                 child: Container(
                     width: size.width,
                     height: 47.5,
@@ -170,29 +176,29 @@ class _ForgotPassword2State extends State<ForgotPassword2> {
                               ),
                             ),
                             onPressed: () {
-                              forgotPasswordBloc.defineNewPassword(widget.email);
+                              forgotPasswordBloc.defineNewPassword(widget.email, context);
                             },
                           );
                         }
                     )
                 ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.025),
-              //   child: StreamBuilder<String>(
-              //       stream: forgotPasswordBloc.errorMessage.stream,
-              //       builder: (context, message) {
-              //         return Text(
-              //           message.data ?? "",
-              //           textAlign: TextAlign.center,
-              //           style: TextStyle(
-              //             color: message.data != null ? errorColor : Colors.transparent,
-              //             fontSize: 15,
-              //           ),
-              //         );
-              //       }
-              //   ),
-              // ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.015),
+                child: StreamBuilder<String>(
+                    stream: forgotPasswordBloc.errorMessage2.stream,
+                    builder: (context, message) {
+                      return Text(
+                        message.data ?? "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: message.data != null ? errorColor : Colors.transparent,
+                          fontSize: 15,
+                        ),
+                      );
+                    }
+                ),
+              ),
             ],
           ),
         ),

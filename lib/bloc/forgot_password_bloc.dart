@@ -8,7 +8,9 @@ import '../classes/user.dart';
 class ForgotPasswordBloc {
 
   BehaviorSubject<String> errorMessage = BehaviorSubject();
+  BehaviorSubject<String> errorMessage2 = BehaviorSubject();
   BehaviorSubject<bool> errorEmail = BehaviorSubject();
+  BehaviorSubject<bool> errorPassword = BehaviorSubject();
   BehaviorSubject<bool> loadingReset = BehaviorSubject();
   BehaviorSubject<bool> loadingReset2 = BehaviorSubject();
   BehaviorSubject<bool> passwordObscure = BehaviorSubject();
@@ -57,13 +59,60 @@ class ForgotPasswordBloc {
     loadingReset.sink.add(false);
   }
 
-  defineNewPassword(String selectedEmail){
+  defineNewPassword(String selectedEmail, context) async {
+
+    loadingReset2.sink.add(true);
+
+    errorPassword.sink.add(false);
+    errorMessage2.sink.add("");
+
+    String password = passwordController.text;
+
+    if(password.isNotEmpty){
+      if(!password.contains(" ")){
+        for (var element in registeredUsersList) {
+          if (element.email == selectedEmail) {
+            if(element.password != password){
+
+              element.password = password;
+
+              String usersString = user.turnListToString(registeredUsersList);
+
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString(User.keyRegisteredUsers, usersString);
+
+              Navigator.pop(context);
+              Navigator.pop(context);
+
+              showDialog(context: context, builder: (_){
+                return const AlertDialog(
+                  title: Text("New password set"),
+                  content: Text("Your password has been successfully changed"),
+                );
+              });
+              
+            }else{
+              errorPassword.sink.add(true);
+              errorMessage2.sink.add("The new password cannot be the same as the previous one");
+            }
+            break;
+          }
+        }
+      }else{
+        errorPassword.sink.add(true);
+        errorMessage2.sink.add("The password cannot contain whitespace characters");
+      }
+    }else{
+      errorPassword.sink.add(true);
+      errorMessage2.sink.add("Fill in the field with your new password");
+    }
+
+    loadingReset2.sink.add(false);
 
   }
 
   getCurrentUsersList() async {
 
-    print("12");
     registeredUsersList = await user.getRegisteredUsersList();
 
   }
