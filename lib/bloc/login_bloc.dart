@@ -104,7 +104,7 @@ class LoginBloc {
     
   }
 
-  validateLogin(){
+  validateLogin(context){
 
     loadingLogin.sink.add(true);
 
@@ -134,6 +134,7 @@ class LoginBloc {
               if (kDebugMode) {
                 print("Login correto");
               }
+              Navigator.pushReplacementNamed(context, "/home");
               errorEmail.sink.add(false);
               errorPassword.sink.add(false);
               errorMessage.sink.add("");

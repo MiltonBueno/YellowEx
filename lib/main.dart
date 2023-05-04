@@ -18,6 +18,7 @@ void main() {
           "/login" : (context) => const Login(),
           "/signup" : (context) => const SignUp(),
           "/forgot" : (context) => const ForgotPassword(),
+          "/home" : (context) => const Home(),
         }
       )
   );

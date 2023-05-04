@@ -162,7 +162,7 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             onPressed: () {
-                              loginBloc.validateLogin();
+                              loginBloc.validateLogin(context);
                             },
                           );
                         }
