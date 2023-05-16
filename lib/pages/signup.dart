@@ -40,7 +40,7 @@ class _SignUpState extends State<SignUp> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.1, left: size.width * 0.03, bottom: size.height * 0.015),
+                  padding: EdgeInsets.only(top: size.height * 0.075, left: size.width * 0.03, bottom: size.height * 0.005),
                   child: IconButton(
                     icon: const Icon(
                       Icons.arrow_back,
@@ -58,7 +58,7 @@ class _SignUpState extends State<SignUp> {
                 child: Image.asset("assets/logo_extensa_A.png", ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.055),
+                padding: EdgeInsets.only(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.045),
                 child: const Text(
                   "Create your account",
                   style: TextStyle(

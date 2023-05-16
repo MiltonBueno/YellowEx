@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yellow_exchange/bloc/login_bloc.dart';
+import 'package:yellow_exchange/classes/category.dart';
 
 import '../classes/custom_input_decoration.dart';
+import '../classes/product.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -46,7 +48,7 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: size.width * 0.25, right: size.width * 0.25, top: size.height * 0.25),
+                padding: EdgeInsets.only(left: size.width * 0.25, right: size.width * 0.25, top: size.height * 0.2),
                 child: Image.asset("assets/logo_simplificada.png", ),
                 // child: Image.asset("assets/logo_extensa_A.png", ),
               ),
@@ -195,7 +197,7 @@ class _LoginState extends State<Login> {
                 }
               ),
               Padding(
-                padding: EdgeInsets.only(top: size.height * 0.025),
+                padding: EdgeInsets.only(top: size.height * 0.015),
                 child: TextButton(
                   onPressed: () {
                     loginBloc.goToSignUpPage(context);

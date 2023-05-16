@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:yellow_exchange/classes/product.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -42,6 +43,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       bottomNavigationBar: Container(
+        height: 80,
         color: const Color(0xFFFFFFFF),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -97,82 +99,131 @@ class _HomeState extends State<Home> {
             // alignment: Alignment.center,
             children: [
               SizedBox(
+                height: size.height - 80,
                 width: size.width,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: appBarHeight + 8, left: size.width * 0.025, right: size.width * 0.025),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            flex: 4,
-                            child: TextField(
-                              cursorColor: const Color(0xFFFFCC33),
-                              decoration: InputDecoration(
-                                hintText: 'Search for products...',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide.none,
+                      Padding(
+                        padding: EdgeInsets.only(top: appBarHeight + 8, left: size.width * 0.025, right: size.width * 0.025),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Flexible(
+                              flex: 4,
+                              child: TextField(
+                                cursorColor: const Color(0xFFFFCC33),
+                                decoration: InputDecoration(
+                                  hintText: 'Search for products...',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey[100],
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(Icons.search),
+                                    onPressed: () {},
+                                  ),
+                                  // focusColor: const Color(0xFFFFCC33),
+                                  // iconColor: const Color(0xFFFFCC33),
+                                  suffixIconColor: Colors.black54
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                                suffixIcon: IconButton(
-                                  icon: const Icon(Icons.search),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      // top: 0,
+                                      // left: 0,
+                                      // right: 0,
+                                      // bottom: 0,
+                                      child: IconButton(
+                                        // iconSize: 30,
+                                        icon: const Icon(FontAwesomeIcons.bell, color: Colors.black54,),
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                    const Positioned(top: 10, right: 10, child: Icon(Icons.circle, size: 12, color: Color(0xFFFFCC33),))
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: IconButton(
+                                  iconSize: 30,
+                                  icon: const Icon(Icons.filter_alt_outlined, color: Colors.black54,),
                                   onPressed: () {},
                                 ),
-                                // focusColor: const Color(0xFFFFCC33),
-                                // iconColor: const Color(0xFFFFCC33),
-                                suffixIconColor: Colors.black54
                               ),
                             ),
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[100],
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    // top: 0,
-                                    // left: 0,
-                                    // right: 0,
-                                    // bottom: 0,
-                                    child: IconButton(
-                                      // iconSize: 30,
-                                      icon: const Icon(FontAwesomeIcons.bell, color: Colors.black54,),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  const Positioned(top: 10, right: 10, child: Icon(Icons.circle, size: 12, color: Color(0xFFFFCC33),))
-                                ],
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[100],
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: IconButton(
-                                iconSize: 30,
-                                icon: const Icon(Icons.filter_alt_outlined, color: Colors.black54,),
-                                onPressed: () {},
-                              ),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                      // Text("Home", style: TextStyle(fontSize: 30),),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.025),
+                        child: Container(
+                          height: 125,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.lightBlue.shade500, Colors.purple.shade500],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(12)
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Advertisement',
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                        child: GridView.builder(
+                          padding: EdgeInsets.zero,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 15.0,
+                            mainAxisSpacing: 15.0,
+                          ),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 5,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              width: 150.0,
+                              height: 150.0,
+                            );
+                          },
+                        ),
+                      ),
+
                     ],
                   ),
                 ),

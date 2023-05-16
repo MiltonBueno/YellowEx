@@ -39,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                    padding: EdgeInsets.only(top: size.height * 0.1, left: size.width * 0.03),
+                    padding: EdgeInsets.only(top: size.height * 0.075, left: size.width * 0.03),
                     child: IconButton(
                       icon: const Icon(
                         Icons.arrow_back,
