@@ -88,7 +88,7 @@ class SignUpBloc {
           registeredUsersList = user.turnStringToList(registeredUsers);
         }
 
-        registeredUsersList.add(UserClass(usernameController.text, emailController.text, usernameController.text, passwordController.text),);
+        registeredUsersList.add(UserClass(usernameController.text, emailController.text, usernameController.text, passwordController.text, false, [], [], []),);
 
         String usersString = user.turnListToString(registeredUsersList);
 

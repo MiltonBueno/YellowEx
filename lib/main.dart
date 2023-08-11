@@ -12,7 +12,7 @@ void main() {
   runApp(
       MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const Home(),
+        home: const SplashScreen(),
         theme: ThemeData(),
         routes: {
           "/login" : (context) => const Login(),

@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../classes/user.dart';
+
 class LoginBloc {
 
   BehaviorSubject<String> errorMessage = BehaviorSubject();
@@ -104,7 +104,7 @@ class LoginBloc {
     
   }
 
-  validateLogin(context){
+  validateLogin(context) async {
 
     loadingLogin.sink.add(true);
 
@@ -130,6 +130,11 @@ class LoginBloc {
           if (element.email == email) {
             emailExists = true;
             if (element.password == password) {
+
+              //definir usuario logado
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString(User.userLoggedKey, element.username);
+              User.loggedUser = element;
 
               if (kDebugMode) {
                 print("Login correto");

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:yellow_exchange/bloc/splash_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
+
+  SplashBloc splashBloc = SplashBloc();
 
   late Image backgroundImage;
   late Image forgotPasswordImage;
@@ -30,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           );
         });
         Timer(const Duration(milliseconds: 1500), () async {
-          Navigator.pushNamed(context, "/login");
+          splashBloc.getUserLoggedAndDefineRoute(context);
         });
 
       });

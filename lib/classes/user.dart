@@ -6,15 +6,23 @@ class UserClass {
   String email;
   String username;
   String password;
+  bool notificationRead;
+  List<int> favoritedProducts;
+  List<int> postedProducts;
+  List<int> toBuyProducts;
 
-  UserClass(this.name, this.email, this.username, this.password);
-  //Esse construtor obriga que as propriedades sejam definidas ao utilizar a classe
+  UserClass(this.name, this.email, this.username, this.password, this.notificationRead, this.favoritedProducts, this.postedProducts, this.toBuyProducts);
 
   // User({this.name = "", this.email = "", this.username = "", this.password = ""});
   //Esse construtor deixa opcional
 
   String userToString() {
-    return '$name|$email|$username|$password';
+
+    String favoritedProductsString = favoritedProducts.map((productId) => productId.toString()).join('/');
+    String postedProductsString = postedProducts.map((productId) => productId.toString()).join('/');
+    String toBuyProductsString = toBuyProducts.map((productId) => productId.toString()).join('/');
+
+    return '$name|$email|$username|$password|$notificationRead|$favoritedProductsString|$postedProductsString|$toBuyProductsString';
   }
 
 }
@@ -24,6 +32,8 @@ class User {
   List<UserClass> registeredUsersList = [];
 
   static String keyRegisteredUsers = "registeredUsers";
+  static String userLoggedKey = "userLoggedUsername";
+  static UserClass? loggedUser;
 
   Future<bool> checkIfThereAreRegisteredUsers() async {
     final prefs = await SharedPreferences.getInstance();
@@ -39,13 +49,13 @@ class User {
   addSimulatedUsers() async {
 
     registeredUsersList.addAll([
-      UserClass("Teste", "teste@email.com", "teste", "teste"),
-      UserClass("Emily Johnson", "emilyj@email.com", "emilyj82", "p@ssw0rd"),
-      UserClass("Daniel Ramirez", "danielr@email.com", "danielr29", "c00lPass"),
-      UserClass("Sophie Lee", "sophiel123@email.com", "sophiel123", "1qazxsw2"),
-      UserClass("Michael Patel", "michaelpatel@email.com", "mpatel86", "MyPassWord123"),
-      UserClass("Julia Wilson", "juliawilson@email.com", "juliawilson23", "s3cur3P@ss"),
-      UserClass("Liam Davis", "liamdavis@email.com", "liamdavis98", "P@ssw0rd!")
+      UserClass("Teste", "teste@email.com", "teste", "teste", false, [], [], []),
+      UserClass("Emily Johnson", "emilyj@email.com", "emilyj82", "p@ssw0rd", false, [], [], []),
+      UserClass("Daniel Ramirez", "danielr@email.com", "danielr29", "c00lPass", false, [], [], []),
+      UserClass("Sophie Lee", "sophiel123@email.com", "sophiel123", "1qazxsw2", false, [], [], []),
+      UserClass("Michael Patel", "michaelpatel@email.com", "mpatel86", "MyPassWord123", false, [], [], []),
+      UserClass("Julia Wilson", "juliawilson@email.com", "juliawilson23", "s3cur3P@ss", false, [], [], []),
+      UserClass("Liam Davis", "liamdavis@email.com", "liamdavis98", "P@ssw0rd!", false, [], [], [])
     ]);
 
     String usersString = turnListToString(registeredUsersList);
@@ -65,7 +75,16 @@ class User {
 
     return usersString.split(',').map((str) {
       List<String> parts = str.split('|');
-      return UserClass(parts[0], parts[1], parts[2], parts[3]);
+      List<int> favoritedProductsList = parts[5].isNotEmpty
+          ? parts[5].split('/').map((number) => int.parse(number)).toList()
+          : [];
+      List<int> postedProductsList = parts[6].isNotEmpty
+          ? parts[6].split('/').map((number) => int.parse(number)).toList()
+          : [];
+      List<int> toBuyProductsList = parts[7].isNotEmpty
+          ? parts[7].split('/').map((number) => int.parse(number)).toList()
+          : [];
+      return UserClass(parts[0], parts[1], parts[2], parts[3], parts[4] == "true", favoritedProductsList, postedProductsList, toBuyProductsList);
     }).toList();
 
   }

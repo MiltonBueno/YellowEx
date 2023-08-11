@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yellow_exchange/pages/forgot_password2.dart';
-
 import '../classes/user.dart';
 
 class ForgotPasswordBloc {
