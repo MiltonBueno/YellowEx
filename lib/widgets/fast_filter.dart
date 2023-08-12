@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../bloc/home_bloc.dart';
 import '../classes/category.dart';
+import '../classes/user.dart';
 
 Widget fastFilter(context, HomeBloc homeBloc){
 
@@ -50,6 +51,7 @@ Widget fastFilter(context, HomeBloc homeBloc){
                                 }else{
                                   homeBloc.selectCategory(Category.electronics);
                                 }
+
                               },
                               child: Column(
                                 children: const [

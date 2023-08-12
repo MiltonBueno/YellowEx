@@ -48,78 +48,118 @@ Widget productContainer(context, HomeBloc homeBloc, ProductClass product){
                               )
                             ],
                           ),
-                          child: StreamBuilder<double>(
-                              stream: homeBloc.favoriteInitialSize.stream,
-                              initialData: 35,
-                              builder: (context, favoriteInitialSize) {
-                                return StreamBuilder<Color>(
-                                    stream: homeBloc.favoriteInitialColor.stream,
-                                    initialData: Colors.black,
-                                    builder: (context, favoriteInitialColor) {
-                                      return StreamBuilder<double>(
-                                          stream: homeBloc.favoriteFinalSize.stream,
-                                          initialData: 35,
-                                          builder: (context, favoriteFinalSize) {
-                                            return StreamBuilder<Color>(
-                                                stream: homeBloc.favoriteFinalColor.stream,
-                                                initialData: Colors.black,
-                                                builder: (context, favoriteFinalColor) {
-                                                  return GestureDetector(
-                                                    onTap: (){
-                                                      homeBloc.favoriteProduct();
-                                                    },
-                                                    onLongPress: (){
-                                                      homeBloc.favoriteProductMulticolor();
-                                                    },
-                                                    child: StreamBuilder<int>(
-                                                        stream: homeBloc.statePhase.stream,
-                                                        initialData: 1,
-                                                        builder: (context, statePhase) {
-                                                          return Padding(
-                                                            padding: const EdgeInsets.only(top: 3.0),
-                                                            child: TweenAnimationBuilder<double>(
-                                                                duration: const Duration(milliseconds: 125),
-                                                                tween: Tween<double>(
-                                                                  begin: favoriteInitialSize.data,
-                                                                  end: favoriteFinalSize.data,
-                                                                ),
-                                                                builder: (BuildContext context, double size, Widget? child) {
-                                                                  return StreamBuilder<double>(
-                                                                      stream: homeBloc.tValue.stream,
-                                                                      initialData: 1,
-                                                                      builder: (context, tValue) {
-                                                                        double initialSize = favoriteInitialSize.data!;
-                                                                        double finalSize = favoriteFinalSize.data!;
-                                                                        return Icon(
-                                                                          Icons.favorite,
-                                                                          size: size,
-                                                                          // color: Colors.red,
-                                                                          color: Color.lerp(
-                                                                              favoriteInitialColor.data,
-                                                                              favoriteFinalColor.data,
-                                                                              // tValue.data!
-                                                                              (initialSize > finalSize)
-                                                                                  ? ((initialSize / size - 1) / ((initialSize / finalSize) - 1))
-                                                                                  : (initialSize < finalSize)
-                                                                                  ? ((size / initialSize - 1) / ((finalSize / initialSize) - 1))
-                                                                                  : 0
-                                                                          ),
-                                                                        );
-                                                                      }
+                          child: StreamBuilder<List<int>>(
+                              stream: homeBloc.favoritedProductsIds.stream,
+                              initialData: const [],
+                              builder: (context, favoritedProductsIdsList) {
+                              return StreamBuilder<double>(
+                                  stream: homeBloc.favoriteInitialSize.stream,
+                                  initialData: 35,
+                                  builder: (context, favoriteInitialSize) {
+                                    return StreamBuilder<Color>(
+                                        stream: homeBloc.favoriteInitialColor.stream,
+                                        initialData: Colors.black,
+                                        builder: (context, favoriteInitialColor) {
+                                          return StreamBuilder<double>(
+                                              stream: homeBloc.favoriteFinalSize.stream,
+                                              initialData: 35,
+                                              builder: (context, favoriteFinalSize) {
+                                                return StreamBuilder<Color>(
+                                                    stream: homeBloc.favoriteFinalColor.stream,
+                                                    initialData: Colors.black,
+                                                    builder: (context, favoriteFinalColor) {
+                                                      return StreamBuilder<int>(
+                                                        stream: homeBloc.selectedProduct,
+                                                        builder: (context, selectedProductId) {
+                                                          return GestureDetector(
+                                                            onTap: (){
+                                                              homeBloc.favoriteProduct(homeBloc.isThisProductFavorited(product.id), product);
+                                                            },
+                                                            onLongPress: (){
+                                                              homeBloc.favoriteProductMulticolor(homeBloc.isThisProductFavorited(product.id), product);
+                                                            },
+                                                            child: StreamBuilder<int>(
+                                                                stream: homeBloc.statePhase.stream,
+                                                                initialData: 1,
+                                                                builder: (context, statePhase) {
+                                                                  //Problema:
+                                                                  //O que define se esta favoritado ou não
+                                                                  //Initial color?
+                                                                  //Passar cor como atributo?
+                                                                  //Como manter com a cor?
+                                                                  //O que define com qual cor vai ficar de fato?
+                                                                  //Antes ficava fixo, agora muda quando seleciona outro
+                                                                  //Mudar verificação que define se vai ficar vermelho ou preto?
+                                                                  //Verificar como diminuir o numero de stream builders
+                                                                  double initialSize = 35;
+                                                                  double finalSize = 35;
+                                                                  //Quando muda qualquer outro coração todos adquirem a cor abaixo
+                                                                  //criar lógica respectiva pra cada um
+                                                                  // favoritedProductsIdsList.data.contains(product.id)
+                                                                  // Color initialColor = Colors.yellow; //vai depender se ta favoritado ou não
+                                                                  // Color finalColor = Colors.green; // aqui tambem
+
+                                                                  //Provavelmente atualiza a cor rapido demais visto que tem um temporizador
+                                                                  //pra atualizá-la de fato
+                                                                  // Future.delayed(const Duration(milliseconds: 125), () => favoritedProductsIdsList.data!.contains(product.id) ?  Colors.red : Colors.black);
+                                                                  Color initialColor = favoritedProductsIdsList.data!.contains(product.id) ?  Colors.red : Colors.black;
+                                                                  Color finalColor = favoritedProductsIdsList.data!.contains(product.id) ?  Colors.black : Colors.red;
+                                                                  // Adquirindo temporariamente a cor vermelha como cor inicial independente da cor anterior
+                                                                  if(selectedProductId.data == product.id){
+                                                                    initialColor = favoritedProductsIdsList.data!.contains(product.id) ?  Colors.red : Colors.black;
+                                                                    finalColor = favoritedProductsIdsList.data!.contains(product.id) ?  Colors.black : Colors.red;
+                                                                    initialSize = favoriteInitialSize.data!;
+                                                                    finalSize = favoriteFinalSize.data!;
+                                                                    initialColor = favoriteInitialColor.data!;
+                                                                    finalColor = favoriteFinalColor.data!;
+                                                                  }
+                                                                  return Padding(
+                                                                    padding: const EdgeInsets.only(top: 3.0),
+                                                                    child: TweenAnimationBuilder<double>(
+                                                                        duration: const Duration(milliseconds: 125),
+                                                                        tween: Tween<double>(
+                                                                          begin: initialSize,
+                                                                          end: finalSize,
+                                                                        ),
+                                                                        builder: (BuildContext context, double size, Widget? child) {
+                                                                          return StreamBuilder<double>(
+                                                                              stream: homeBloc.tValue.stream,
+                                                                              initialData: 1,
+                                                                              builder: (context, tValue) {
+                                                                                return Icon(
+                                                                                  Icons.favorite,
+                                                                                  size: size,
+                                                                                  // color: Colors.red,
+                                                                                  color: Color.lerp(
+                                                                                      initialColor,
+                                                                                      finalColor,
+                                                                                      // tValue.data!
+                                                                                      (initialSize > finalSize)
+                                                                                          ? ((initialSize / size - 1) / ((initialSize / finalSize) - 1))
+                                                                                          : (initialSize < finalSize)
+                                                                                          ? ((size / initialSize - 1) / ((finalSize / initialSize) - 1))
+                                                                                          : 0
+                                                                                  ),
+                                                                                );
+                                                                              }
+                                                                          );
+                                                                        }
+                                                                    ),
                                                                   );
                                                                 }
                                                             ),
                                                           );
                                                         }
-                                                    ),
-                                                  );
-                                                }
-                                            );
-                                          }
-                                      );
-                                    }
-                                );
-                              }
+                                                      );
+                                                    }
+                                                );
+                                              }
+                                          );
+                                        }
+                                    );
+                                  }
+                              );
+                            }
                           )
                       )
                   )

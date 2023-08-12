@@ -83,7 +83,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       duration: const Duration(milliseconds: 350),
                       selectedIndex: selectedIndex,
                       tabs: const [
-                        GButton(icon: Icons.home_filled, text: "Home",),
+                        GButton(icon: Icons.home_filled, text: "Home", ),
                         GButton(icon: Icons.favorite, text: "Favorites",),
                         GButton(icon: Icons.shopping_bag, text: "My Listings",),
                         GButton(icon: Icons.shopping_cart, text: "Cart",),

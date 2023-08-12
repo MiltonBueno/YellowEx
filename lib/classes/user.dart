@@ -33,12 +33,13 @@ class User {
 
   static String keyRegisteredUsers = "registeredUsers";
   static String userLoggedKey = "userLoggedUsername";
+  static String createdSimulatedUsers = "createdSimulatedUsers";
   static UserClass? loggedUser;
 
   Future<bool> checkIfThereAreRegisteredUsers() async {
     final prefs = await SharedPreferences.getInstance();
-    String? registeredUsers = prefs.getString(keyRegisteredUsers);
-    if(registeredUsers == "" || registeredUsers == null){
+    String registeredUsers = prefs.getString(keyRegisteredUsers) ?? "";
+    if(registeredUsers == ""){
       return false;
     }else{
       return true;
@@ -49,7 +50,7 @@ class User {
   addSimulatedUsers() async {
 
     registeredUsersList.addAll([
-      UserClass("Teste", "teste@email.com", "teste", "teste", false, [], [], []),
+      UserClass("Teste", "teste@email.com", "teste", "teste", false, [0], [1], []),
       UserClass("Emily Johnson", "emilyj@email.com", "emilyj82", "p@ssw0rd", false, [], [], []),
       UserClass("Daniel Ramirez", "danielr@email.com", "danielr29", "c00lPass", false, [], [], []),
       UserClass("Sophie Lee", "sophiel123@email.com", "sophiel123", "1qazxsw2", false, [], [], []),
@@ -62,6 +63,8 @@ class User {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(keyRegisteredUsers, usersString);
+
+
 
   }
 

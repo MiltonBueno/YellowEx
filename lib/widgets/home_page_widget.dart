@@ -134,19 +134,27 @@ Widget home(context, HomeBloc homeBloc){
                     fastFilter(context, homeBloc),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                      child: GridView.count(
-                        crossAxisSpacing: size.width * 0.05,
-                        mainAxisSpacing: size.width * 0.05,
-                        padding: EdgeInsets.only(bottom: size.width * 0.05),
-                        crossAxisCount: 2,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        childAspectRatio: 0.75,
-                        children: [
-                          productContainer(context, homeBloc, ProductClass(id: 0, name: "Smartphone Samsung Galaxy", value: 2000.00, category: Category.electronics, image: Image.asset("assets/celular_s21.jpg", fit: BoxFit.contain), imageAsset: '')),
-                          productContainer(context, homeBloc, ProductClass(id: 1, name: "Produto qualquer", value: 150.00, category: Category.recreation, image: Image.asset("assets/forgot_password.jpg", fit: BoxFit.contain), imageAsset: '')),
-                          productContainer(context, homeBloc, ProductClass(id: 2, name: "Fundo de tela", value: 300.00, category: Category.clothing, image: Image.file(File("/data/user/0/com.example.yellow_exchange/cache/ba2a3a23-a1e0-4fdd-93b2-3a6f81df61774085202887462916278.jpg"), fit: BoxFit.contain), imageAsset: '')),
-                        ],
+                      child: StreamBuilder<List<ProductClass>>(
+                        stream: homeBloc.productsToShow.stream,
+                        initialData: const [],
+                        builder: (context, products) {
+                          return GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisSpacing: size.width * 0.05,
+                              mainAxisSpacing: size.width * 0.05,
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.75,
+                            ),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: EdgeInsets.only(bottom: size.width * 0.05),
+                            itemCount: products.data != null ? products.data!.length : 0, // Replace with the actual length of your list
+                            itemBuilder: (BuildContext context, int index) {
+                              ProductClass product = products.data![index]; // Replace with your list of ProductClass objects
+                              return productContainer(context, homeBloc, product);
+                            },
+                          );
+                        }
                       ),
                     ),
                   ],

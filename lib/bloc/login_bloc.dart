@@ -88,6 +88,8 @@ class LoginBloc {
 
     await user.addSimulatedUsers();
     await updateRegisteredUsers();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(User.createdSimulatedUsers, "true");
 
   }
 
