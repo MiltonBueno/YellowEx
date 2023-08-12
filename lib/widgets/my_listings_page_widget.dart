@@ -18,20 +18,15 @@ Widget myListings(context, HomeBloc homeBloc){
         child: Stack(
           alignment: Alignment.center,
           children: [
-            GestureDetector(
-              onTap: (){
-                myListingsBloc.pickImageFromGallery();
-              },
-              child: SizedBox(
-                width: size.width,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Text("My listings", style: TextStyle(fontSize: 30),),
-                    ],
-                  ),
+            SizedBox(
+              width: size.width,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Text("My listings", style: TextStyle(fontSize: 30),),
+                  ],
                 ),
               ),
             ),

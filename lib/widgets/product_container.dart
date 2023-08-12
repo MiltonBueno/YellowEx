@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../bloc/home_bloc.dart';
 import '../classes/product.dart';
 
-Widget productContainer(context, HomeBloc homeBloc, Product product){
+Widget productContainer(context, HomeBloc homeBloc, ProductClass product){
 
   var size = MediaQuery.of(context).size;
   var shortestSide = MediaQuery.of(context).size.shortestSide;

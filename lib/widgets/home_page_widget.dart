@@ -143,9 +143,9 @@ Widget home(context, HomeBloc homeBloc){
                         shrinkWrap: true,
                         childAspectRatio: 0.75,
                         children: [
-                          productContainer(context, homeBloc, Product(id: 0, name: "Smartphone Samsung Galaxy", value: 2000.00, category: Category.electronics, image: Image.asset("assets/celular_s21.jpg", fit: BoxFit.contain), imageAsset: '')),
-                          productContainer(context, homeBloc, Product(id: 1, name: "Produto qualquer", value: 150.00, category: Category.recreation, image: Image.asset("assets/forgot_password.jpg", fit: BoxFit.contain), imageAsset: '')),
-                          productContainer(context, homeBloc, Product(id: 2, name: "Fundo de tela", value: 300.00, category: Category.clothing, image: Image.file(File("/data/user/0/com.example.yellow_exchange/cache/ba2a3a23-a1e0-4fdd-93b2-3a6f81df61774085202887462916278.jpg"), fit: BoxFit.contain), imageAsset: '')),
+                          productContainer(context, homeBloc, ProductClass(id: 0, name: "Smartphone Samsung Galaxy", value: 2000.00, category: Category.electronics, image: Image.asset("assets/celular_s21.jpg", fit: BoxFit.contain), imageAsset: '')),
+                          productContainer(context, homeBloc, ProductClass(id: 1, name: "Produto qualquer", value: 150.00, category: Category.recreation, image: Image.asset("assets/forgot_password.jpg", fit: BoxFit.contain), imageAsset: '')),
+                          productContainer(context, homeBloc, ProductClass(id: 2, name: "Fundo de tela", value: 300.00, category: Category.clothing, image: Image.file(File("/data/user/0/com.example.yellow_exchange/cache/ba2a3a23-a1e0-4fdd-93b2-3a6f81df61774085202887462916278.jpg"), fit: BoxFit.contain), imageAsset: '')),
                         ],
                       ),
                     ),
