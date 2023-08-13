@@ -24,6 +24,7 @@ class HomeBloc {
   BehaviorSubject<List<ProductClass>> productsToShow = BehaviorSubject();
   BehaviorSubject<int> selectedProduct = BehaviorSubject();
   BehaviorSubject<List<int>> favoritedProductsIds = BehaviorSubject();
+  BehaviorSubject<bool> deactivateFavorite = BehaviorSubject();
   Color heartColor = Colors.black;
 
   List<ProductClass> productsToShowList = [];
@@ -84,7 +85,6 @@ class HomeBloc {
       double finalSize,
       Color initialColor,
       Color finalColor,
-      Color newHeartColor,
       Duration delay) async {
     selectedProduct.sink.add(productId);
     await Future.delayed(delay, () {
@@ -92,27 +92,32 @@ class HomeBloc {
       favoriteFinalSize.sink.add(finalSize);
       favoriteInitialColor.sink.add(initialColor);
       favoriteFinalColor.sink.add(finalColor);
-      heartColor = newHeartColor;
     });
   }
 
   void favoriteProduct(bool isFavorited, ProductClass product) {
+
+    deactivateFavorite.sink.add(true);
+    Future.delayed(const Duration(milliseconds: 125), () {
+      deactivateFavorite.sink.add(false);
+    });
+
     if (isFavorited) {
       favoritedProductsList.remove(product);
       favoritedProductsIdList.remove(product.id);
       favoritedProductsIds.sink.add(favoritedProductsIdList);
       updateLoggedUserFavoriteProducts(false, product.id);
-      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.red, Colors.red, Colors.red, const Duration(milliseconds: 125));
-      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.red, Colors.black, Colors.black, const Duration(milliseconds: 250));
+      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.red, Colors.red, const Duration(milliseconds: 125));
+      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.red, Colors.black, const Duration(milliseconds: 250));
     } else {
       favoritedProductsList.add(product);
       favoritedProductsIdList.add(product.id);
       favoritedProductsIds.sink.add(favoritedProductsIdList);
       updateLoggedUserFavoriteProducts(true, product.id);
-      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.black, Colors.black, Colors.black, const Duration(milliseconds: 125));
-      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.black, Colors.red, Colors.red, const Duration(milliseconds: 250));
-      updateFavoriteValues(product.id, isFavorited, 35, 40, Colors.red, Colors.red, Colors.red, const Duration(milliseconds: 375));
-      updateFavoriteValues(product.id, isFavorited, 40, 35, Colors.red, Colors.red, Colors.red, const Duration(milliseconds: 500));
+      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.black, Colors.black, const Duration(milliseconds: 125));
+      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.black, Colors.red, const Duration(milliseconds: 250));
+      // updateFavoriteValues(product.id, isFavorited, 35, 40, Colors.red, Colors.red, const Duration(milliseconds: 375));
+      // updateFavoriteValues(product.id, isFavorited, 40, 35, Colors.red, Colors.red, const Duration(milliseconds: 500));
     }
   }
 
@@ -122,24 +127,19 @@ class HomeBloc {
       favoritedProductsIdList.remove(product.id);
       favoritedProductsIds.sink.add(favoritedProductsIdList);
       updateLoggedUserFavoriteProducts(false, product.id);
-      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.red, Colors.red, Colors.red, const Duration(milliseconds: 125));
-      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.red, Colors.black, Colors.black, const Duration(milliseconds: 250));
+      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.red, Colors.red, const Duration(milliseconds: 125));
+      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.red, Colors.black, const Duration(milliseconds: 250));
     } else {
       favoritedProductsList.add(product);
       favoritedProductsIdList.add(product.id);
       favoritedProductsIds.sink.add(favoritedProductsIdList);
       updateLoggedUserFavoriteProducts(true, product.id);
-      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.black, Colors.green, Colors.green, const Duration(milliseconds: 125));
-      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.green, Colors.orange, Colors.orange, const Duration(milliseconds: 250));
-      updateFavoriteValues(product.id, isFavorited, 35, 40, Colors.orange, Colors.yellow, Colors.yellow, const Duration(milliseconds: 375));
-      updateFavoriteValues(product.id, isFavorited, 40, 35, Colors.yellow, Colors.red, Colors.red, const Duration(milliseconds: 500));
+      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.black, Colors.green, const Duration(milliseconds: 125));
+      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.green, Colors.orange, const Duration(milliseconds: 250));
+      updateFavoriteValues(product.id, isFavorited, 35, 40, Colors.orange, Colors.yellow, const Duration(milliseconds: 375));
+      updateFavoriteValues(product.id, isFavorited, 40, 35, Colors.yellow, Colors.red, const Duration(milliseconds: 500));
     }
   }
-
-  //A base de dados está alterando corretamente (as cores mudam pra vermelho ou preto da forma correta)
-  //Mas a cor "inicial" está errada, e quando altera de outro produto todos alteram
-  //MESMO QUE ELE ESTAVA ANTERIORMENTE VERMELHO, QUANDO CLICA EM OUTRO OS OUTROS FICAM PRETOS
-  //Criar lógica que detecta a cor inicial?
 
   updateLoggedUserFavoriteProducts(bool isAdd, int productId) async {
     if(User.loggedUser != null){
