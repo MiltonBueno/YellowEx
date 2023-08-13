@@ -220,7 +220,6 @@ class HomeBloc {
       ]);
       Product.allProducts = productsToShowList;
     }
-
     clearProductsToShowList();
 
     updateFavoritedProducts();
