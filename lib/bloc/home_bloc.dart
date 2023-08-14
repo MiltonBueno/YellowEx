@@ -9,14 +9,22 @@ import 'package:yellow_exchange/classes/product.dart';
 
 import '../classes/user.dart';
 
+class Favorite{
+  double favoriteInitialSize;
+  double favoriteFinalSize;
+  Color favoriteInitialColor;
+  Color favoriteFinalColor;
+
+  Favorite({this.favoriteInitialSize = 35,
+    this.favoriteFinalSize = 35,
+    this.favoriteInitialColor = Colors.black,
+    this.favoriteFinalColor = Colors.black,});
+}
+
 class HomeBloc {
 
   BehaviorSubject<String> selectedCategory = BehaviorSubject();
   BehaviorSubject<double> tValue = BehaviorSubject();
-  BehaviorSubject<double> favoriteInitialSize = BehaviorSubject();
-  BehaviorSubject<double> favoriteFinalSize = BehaviorSubject();
-  BehaviorSubject<Color> favoriteInitialColor = BehaviorSubject();
-  BehaviorSubject<Color> favoriteFinalColor = BehaviorSubject();
   BehaviorSubject<int> statePhase = BehaviorSubject();
   BehaviorSubject<bool> isNotificationPageOpen = BehaviorSubject();
   BehaviorSubject<bool> isNotificationPageAlreadyOpen = BehaviorSubject();
@@ -25,13 +33,14 @@ class HomeBloc {
   BehaviorSubject<int> selectedProduct = BehaviorSubject();
   BehaviorSubject<List<int>> favoritedProductsIds = BehaviorSubject();
   BehaviorSubject<bool> deactivateFavorite = BehaviorSubject();
+  BehaviorSubject<Favorite> favorite = BehaviorSubject();
   Color heartColor = Colors.black;
 
   List<ProductClass> productsToShowList = [];
   List<ProductClass> favoritedProductsList = [];
   List<int> favoritedProductsIdList = [];
 
-  double tValueDouble = 0;
+  Favorite favoriteClass = Favorite();
 
   User user = User();
 
@@ -45,28 +54,13 @@ class HomeBloc {
   closeNotificationPage(){
     isNotificationPageOpen.sink.add(false);
     isNotificationPageAlreadyOpen.sink.add(false);
+    setNotificationAsRead();
     // Future.delayed(const Duration(milliseconds: 150), () {
     // });
   }
 
   selectCategory(String category){
     selectedCategory.sink.add(category);
-  }
-
-  double getT(initialSize, finalSize, currentSize){
-    double t = 0;
-    if(initialSize == 35 && finalSize == 25){
-      t = ((initialSize / currentSize) - 1) / ((35/25) - 1); //
-    } else if(initialSize == 25 && finalSize == 35){
-      t = (currentSize / initialSize - 1) / ((35 / 25) - 1); //Testado
-    } else if(initialSize == 35 && finalSize == 40){
-      t = (currentSize / initialSize - 1) / ((40 / 35) - 1); //Testado
-    }else if(initialSize == 40 && finalSize == 35){
-      t = (initialSize / currentSize - 1) / ((40 / 35) - 1);
-    }else{
-      t = 0;
-    }
-    return t;
   }
 
   bool isThisProductFavorited(int productId) {
@@ -88,10 +82,7 @@ class HomeBloc {
       Duration delay) async {
     selectedProduct.sink.add(productId);
     await Future.delayed(delay, () {
-      favoriteInitialSize.sink.add(initialSize);
-      favoriteFinalSize.sink.add(finalSize);
-      favoriteInitialColor.sink.add(initialColor);
-      favoriteFinalColor.sink.add(finalColor);
+      favorite.sink.add(Favorite(favoriteInitialSize: initialSize, favoriteFinalSize: finalSize, favoriteInitialColor: initialColor, favoriteFinalColor: finalColor));
     });
   }
 
@@ -116,12 +107,16 @@ class HomeBloc {
       updateLoggedUserFavoriteProducts(true, product.id);
       updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.black, Colors.black, const Duration(milliseconds: 125));
       updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.black, Colors.red, const Duration(milliseconds: 250));
-      // updateFavoriteValues(product.id, isFavorited, 35, 40, Colors.red, Colors.red, const Duration(milliseconds: 375));
-      // updateFavoriteValues(product.id, isFavorited, 40, 35, Colors.red, Colors.red, const Duration(milliseconds: 500));
     }
   }
 
   void favoriteProductMulticolor(bool isFavorited, ProductClass product) {
+
+    deactivateFavorite.sink.add(true);
+    Future.delayed(const Duration(milliseconds: 125), () {
+      deactivateFavorite.sink.add(false);
+    });
+    
     if (isFavorited) {
       favoritedProductsList.remove(product);
       favoritedProductsIdList.remove(product.id);
@@ -257,7 +252,42 @@ class HomeBloc {
     favoritedProductsIds.sink.add(favoritedProductsIdList);
   }
 
+  discoverIfNotificationWasRead(){
+    if(User.loggedUser != null){
+      if(User.loggedUser!.notificationRead){
+        setNotificationAsRead();
+      }else{
+        notificationWasRead.sink.add(false);
+      }
+    }
+    // redireciona pro login
+  }
+
+  setNotificationAsRead() async {
+    notificationWasRead.sink.add(true);
+    if(User.loggedUser != null){
+      if(!User.loggedUser!.notificationRead){
+        UserClass currentAttributes = User.loggedUser!;
+
+        UserClass newUserAttributes = UserClass(
+            currentAttributes.name, currentAttributes.email, currentAttributes.username, currentAttributes.password,
+            true,
+            currentAttributes.favoritedProducts, currentAttributes.postedProducts, currentAttributes.toBuyProducts);
+        final prefs = await SharedPreferences.getInstance();
+        String allUsers = prefs.getString(User.keyRegisteredUsers) ?? "";
+        List<UserClass> allUsersList = user.turnStringToList(allUsers);
+        allUsersList.removeWhere((element) => element.username == currentAttributes.name);
+        allUsersList.add(newUserAttributes);
+        prefs.setString(User.keyRegisteredUsers, user.turnListToString(allUsersList));
+
+      }
+    }else{
+      //Tela de login
+    }
+  }
+
   HomeBloc(){
+    discoverIfNotificationWasRead();
     getProductsToShowList();
   }
 
