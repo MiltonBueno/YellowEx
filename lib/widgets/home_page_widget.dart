@@ -138,21 +138,39 @@ Widget home(context, HomeBloc homeBloc){
                         stream: homeBloc.productsToShow.stream,
                         initialData: const [],
                         builder: (context, products) {
-                          return GridView.builder(
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: size.width * 0.05,
-                              mainAxisSpacing: size.width * 0.05,
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.75,
-                            ),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            padding: EdgeInsets.only(bottom: size.width * 0.05),
-                            itemCount: products.data != null ? products.data!.length : 0, // Replace with the actual length of your list
-                            itemBuilder: (BuildContext context, int index) {
-                              ProductClass product = products.data![index]; // Replace with your list of ProductClass objects
-                              return productContainer(context, homeBloc, product);
-                            },
+                          return StreamBuilder<String>(
+                            stream: homeBloc.selectedCategory.stream,
+                            initialData: "",
+                            builder: (context, selectedCategory) {
+                              int itemCount = 0;
+                              List<ProductClass> productsToBeShown = [];
+                              if (products.data!.isNotEmpty) {
+                                if (selectedCategory.data!.isEmpty) {
+                                  productsToBeShown = products.data!;
+                                } else {
+                                  productsToBeShown = products.data!.where((produto) =>
+                                  produto.category == selectedCategory.data).toList();
+                                }
+                                itemCount = productsToBeShown.length;
+                              }
+
+                              return GridView.builder(
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: size.width * 0.05,
+                                  mainAxisSpacing: size.width * 0.05,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.75,
+                                ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding: EdgeInsets.only(bottom: size.width * 0.05),
+                                itemCount: itemCount,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final product = productsToBeShown[index];
+                                  return productContainer(context, homeBloc, product);
+                                },
+                              );
+                            }
                           );
                         }
                       ),

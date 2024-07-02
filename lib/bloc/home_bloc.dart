@@ -98,8 +98,8 @@ class HomeBloc {
       favoritedProductsIdList.remove(product.id);
       favoritedProductsIds.sink.add(favoritedProductsIdList);
       updateLoggedUserFavoriteProducts(false, product.id);
-      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.red, Colors.red, const Duration(milliseconds: 125));
-      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.red, Colors.black, const Duration(milliseconds: 250));
+      updateFavoriteValues(product.id, isFavorited, 35, 40, Colors.red, Colors.red, const Duration(milliseconds: 125));
+      updateFavoriteValues(product.id, isFavorited, 40, 35, Colors.red, Colors.black, const Duration(milliseconds: 250));
     } else {
       favoritedProductsList.add(product);
       favoritedProductsIdList.add(product.id);
@@ -122,8 +122,8 @@ class HomeBloc {
       favoritedProductsIdList.remove(product.id);
       favoritedProductsIds.sink.add(favoritedProductsIdList);
       updateLoggedUserFavoriteProducts(false, product.id);
-      updateFavoriteValues(product.id, isFavorited, 35, 25, Colors.red, Colors.red, const Duration(milliseconds: 125));
-      updateFavoriteValues(product.id, isFavorited, 25, 35, Colors.red, Colors.black, const Duration(milliseconds: 250));
+      updateFavoriteValues(product.id, isFavorited, 35, 40, Colors.red, Colors.red, const Duration(milliseconds: 125));
+      updateFavoriteValues(product.id, isFavorited, 40, 35, Colors.red, Colors.black, const Duration(milliseconds: 250));
     } else {
       favoritedProductsList.add(product);
       favoritedProductsIdList.add(product.id);
